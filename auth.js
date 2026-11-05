@@ -177,7 +177,7 @@
     const nc = $('navconvites'); if (nc) nc.classList.toggle('hide', role !== 'sindico');
     document.querySelectorAll('[data-page="cobranca"],[data-page="boletos"]').forEach(b => b.classList.toggle('hide', role !== 'sindico'));   // módulos de cobrança: só o síndico
     const sf = document.querySelector('.sidefoot');
-    if (sf) sf.innerHTML = esc(APP.perfil.nome) + '<br>Versão 1.12.0 · fase de testes';
+    if (sf) sf.innerHTML = esc(APP.perfil.nome) + '<br>Versão 1.12.1 · fase de testes';
     render();
   }
 
