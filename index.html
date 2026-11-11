@@ -134,7 +134,7 @@ function cobPrint(res,rows,rascunho){
  window.addEventListener('afterprint',done);window.print();
 }
 const genericBaseCob=genericPage;
-genericPage=function(){if(page==='cobranca')return window.APP&&APP.on&&window.cobrancaDbPage?cobrancaDbPage():cobrancaPage();const h=genericBaseCob();return page==='menu'?h.replace(/<\/div>\s*$/,navCard('⊞','Cobrança mensal','Conferência e liberação dos boletos','cobranca')+'</div>'):h};
+genericPage=function(){if(page==='cobranca')return cobrancaPage();const h=genericBaseCob();return page==='menu'?h.replace(/<\/div>\s*$/,navCard('⊞','Cobrança mensal','Conferência e liberação dos boletos','cobranca')+'</div>'):h};
 const bindPrevCob=bindPage;
 bindPage=function(){bindPrevCob();
  const gid=i=>document.getElementById(i);
@@ -202,4 +202,4 @@ bindPage=function(){bindPrevBol();
 };
 function go(p){page=p;render();window.scrollTo(0,0)}document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));document.getElementById('role').addEventListener('change',e=>{role=e.target.value;render()});render();
 if ('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost' || location.hostname==='127.0.0.1')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
-</script><div id="printarea" aria-hidden="true"></div><script src="./vendor/supabase.js"></script><script src="./config.js"></script><script src="./auth.js"></script><script src="./ofx.js"></script><script src="./caixa.js"></script><script src="./extrato.js"></script><script src="./cobranca-ui.js"></script></body></html>
+</script><div id="printarea" aria-hidden="true"></div><script src="./vendor/supabase.js"></script><script src="./config.js"></script><script src="./auth.js"></script><script src="./ofx.js"></script><script src="./caixa.js"></script><script src="./extrato.js"></script></body></html>
