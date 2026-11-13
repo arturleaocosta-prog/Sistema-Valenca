@@ -134,7 +134,7 @@ function cobPrint(res,rows,rascunho){
  window.addEventListener('afterprint',done);window.print();
 }
 const genericBaseCob=genericPage;
-genericPage=function(){if(page==='cobranca')return cobrancaPage();const h=genericBaseCob();return page==='menu'?h.replace(/<\/div>\s*$/,navCard('⊞','Cobrança mensal','Conferência e liberação dos boletos','cobranca')+'</div>'):h};
+genericPage=function(){if(page==='cobranca')return window.APP&&APP.on&&window.cobrancaDbPage?cobrancaDbPage():cobrancaPage();const h=genericBaseCob();return page==='menu'?h.replace(/<\/div>\s*$/,navCard('⊞','Cobrança mensal','Conferência e liberação dos boletos','cobranca')+'</div>'):h};
 const bindPrevCob=bindPage;
 bindPage=function(){bindPrevCob();
  const gid=i=>document.getElementById(i);
@@ -200,6 +200,10 @@ bindPage=function(){bindPrevBol();
    const blob=new Blob(['\ufeff'+linhas.join('\r\n')+'\r\n'],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='boletos_teste_'+bolMes+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
  });
 };
-function go(p){page=p;render();window.scrollTo(0,0)}document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));document.getElementById('role').addEventListener('change',e=>{role=e.target.value;render()});render();
+/* V1.16: botão/gesto VOLTAR do celular. Cada aba abre uma entrada no histórico (só uma, substituída ao trocar de aba); voltar fecha a janela aberta (se houver) ou retorna à tela inicial, em vez de sair do aplicativo. Na tela inicial, voltar sai normalmente. */
+function go(p,doHistorico){page=p;render();window.scrollTo(0,0);if(doHistorico)return;try{const aba=history.state&&history.state.aba;if(p==='inicio'){if(aba)history.back()}else if(aba)history.replaceState({aba:p},'');else history.pushState({aba:p},'')}catch(e){}}
+try{if(history.state&&history.state.aba)history.replaceState(null,'')}catch(e){}
+window.addEventListener('popstate',()=>{const ms=document.querySelectorAll('.modal');if(ms.length){ms.forEach(m=>m.remove());if(page!=='inicio')try{history.pushState({aba:page},'')}catch(e){}return}if(page!=='inicio')go('inicio',true)});
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));document.getElementById('role').addEventListener('change',e=>{role=e.target.value;render()});render();
 if ('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost' || location.hostname==='127.0.0.1')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
-</script><div id="printarea" aria-hidden="true"></div><script src="./vendor/supabase.js"></script><script src="./config.js"></script><script src="./auth.js"></script><script src="./ofx.js"></script><script src="./caixa.js"></script><script src="./extrato.js"></script></body></html>
+</script><div id="printarea" aria-hidden="true"></div><script src="./vendor/supabase.js"></script><script src="./config.js"></script><script src="./auth.js"></script><script src="./ofx.js"></script><script src="./caixa.js"></script><script src="./extrato.js"></script><script src="./cobranca-ui.js"></script><script src="./dashboard-fin.js"></script></body></html>

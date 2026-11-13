@@ -175,22 +175,22 @@
       $('avatar').parentNode.insertBefore(b, $('avatar'));
     }
     const nc = $('navconvites'); if (nc) nc.classList.toggle('hide', role !== 'sindico');
-    document.querySelectorAll('[data-page="cobranca"],[data-page="boletos"]').forEach(b => b.classList.toggle('hide', role !== 'sindico'));   // módulos de cobrança: só o síndico
+    document.querySelectorAll('[data-page="boletos"]').forEach(b => b.classList.toggle('hide', role !== 'sindico'));   // boletos (teste): só o síndico; a cobrança por unidade é de todos (cada perfil vê o que lhe cabe)
     const sf = document.querySelector('.sidefoot');
-    if (sf) sf.innerHTML = esc(APP.perfil.nome) + '<br>Versão 1.14.0 · fase de testes';
+    if (sf) sf.innerHTML = esc(APP.perfil.nome) + '<br>Versão 1.16.0 · fase de testes';
     render();
   }
 
   /* ---------------- render: avisos de módulos em demonstração ---------------- */
   const renderOrig = window.render;
   window.render = function () {
-    if (APP.on && role !== 'sindico' && ['cobranca', 'boletos'].includes(page)) page = 'inicio';   // rota protegida (cobrança/boletos)
+    if (APP.on && role !== 'sindico' && ['boletos'].includes(page)) page = 'inicio';   // rota protegida (cobrança/boletos)
     renderOrig();
     if (!APP.on) return;
-    if (role !== 'sindico') document.querySelectorAll('[data-go="cobranca"],[data-go="boletos"]').forEach(e => e.remove());
+    if (role !== 'sindico') document.querySelectorAll('[data-go="boletos"]').forEach(e => e.remove());
     if (page !== 'convites') APP.ultimoConvite = null;
     const c = $('content');
-    if (!['reservas', 'convites', 'menu', 'financeiro'].includes(page)) {
+    if (!['reservas', 'convites', 'menu', 'financeiro', 'dashboard'].includes(page)) {
       c.insertAdjacentHTML('afterbegin', '<div class="notice">Este módulo ainda é uma demonstração: os dados são fictícios e não são salvos.</div>');
     }
     if (page === 'reservas') bindVaga();
